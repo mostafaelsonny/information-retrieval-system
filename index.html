@@ -1,0 +1,1171 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>غرفة عمليات القيادة والمتابعة اللحظية — مشروع IR</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-page: #f8fafc;
+      --bg-card: #ffffff;
+      --bg-card-subtle: #f1f5f9;
+      --border: #e2e8f0;
+      --border-focus: #3b82f6;
+      --text-main: #0f172a;
+      --text-muted: #64748b;
+      --text-light: #94a3b8;
+      
+      /* Member Accent Colors (Pastel / Professional) */
+      --color-m1-bg: #ecfdf5; --color-m1-border: #a7f3d0; --color-m1-text: #065f46; --color-m1-badge: #10b981;
+      --color-m2-bg: #fff7ed; --color-m2-border: #fed7aa; --color-m2-text: #9a3412; --color-m2-badge: #f97316;
+      --color-m3-bg: #fefce8; --color-m3-border: #fef08a; --color-m3-text: #854d0e; --color-m3-badge: #eab308;
+      --color-m4-bg: #eff6ff; --color-m4-border: #bfdbfe; --color-m4-text: #1e40af; --color-m4-badge: #3b82f6;
+      --color-m5-bg: #faf5ff; --color-m5-border: #e9d5ff; --color-m5-text: #6b21a8; --color-m5-badge: #a855f7;
+      
+      --color-danger: #ef4444;
+      --color-success: #10b981;
+      --color-warning: #f59e0b;
+      --color-info: #0284c7;
+      
+      --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+      --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.07), 0 2px 4px -2px rgb(0 0 0 / 0.05);
+      --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.08), 0 4px 6px -4px rgb(0 0 0 / 0.04);
+      --radius: 14px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Cairo', system-ui, -apple-system, sans-serif;
+      background-color: var(--bg-page);
+      color: var(--text-main);
+      line-height: 1.6;
+      padding: 24px;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .container {
+      max-width: 1380px;
+      margin: 0 auto;
+    }
+
+    /* Top Command Header */
+    header {
+      background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 30px;
+      margin-bottom: 24px;
+      box-shadow: var(--shadow-md);
+      position: relative;
+      overflow: hidden;
+    }
+
+    header::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 8px;
+      height: 100%;
+      background: linear-gradient(to bottom, #10b981, #3b82f6, #a855f7);
+    }
+
+    .header-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 16px;
+      margin-bottom: 16px;
+    }
+
+    .title-group h1 {
+      font-size: 26px;
+      font-weight: 900;
+      color: #0f172a;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .title-group p {
+      color: var(--text-muted);
+      font-size: 14px;
+      margin-top: 4px;
+    }
+
+    .badge-lead {
+      background-color: #ecfdf5;
+      color: #065f46;
+      border: 1px solid #a7f3d0;
+      padding: 6px 14px;
+      border-radius: 9999px;
+      font-size: 13px;
+      font-weight: 700;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .pulse-dot {
+      width: 10px;
+      height: 10px;
+      background-color: #10b981;
+      border-radius: 50%;
+      box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7);
+      animation: pulse 1.6s infinite;
+    }
+
+    @keyframes pulse {
+      0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); }
+      70% { transform: scale(1); box-shadow: 0 0 0 8px rgba(16, 185, 129, 0); }
+      100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
+    }
+
+    /* KPI Highlights */
+    .kpi-row {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+      gap: 16px;
+      margin-top: 20px;
+    }
+
+    .kpi-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 16px 18px;
+      box-shadow: var(--shadow-sm);
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .kpi-label {
+      font-size: 12px;
+      color: var(--text-muted);
+      font-weight: 600;
+    }
+
+    .kpi-value {
+      font-size: 22px;
+      font-weight: 800;
+      color: var(--text-main);
+    }
+
+    .kpi-desc {
+      font-size: 11px;
+      color: var(--text-light);
+    }
+
+    /* Navigation Tabs */
+    .tabs-nav {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      margin-bottom: 24px;
+      padding-bottom: 4px;
+    }
+
+    .tab-btn {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+      padding: 10px 20px;
+      border-radius: 10px;
+      font-family: inherit;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      white-space: nowrap;
+    }
+
+    .tab-btn:hover {
+      background: #f1f5f9;
+      color: var(--text-main);
+    }
+
+    .tab-btn.active {
+      background: #3b82f6;
+      color: #ffffff;
+      border-color: #3b82f6;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .tab-content {
+      display: none;
+    }
+
+    .tab-content.active {
+      display: block;
+      animation: fadeIn 0.3s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Layout Sections */
+    .grid-2 {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(480px, 1fr));
+      gap: 24px;
+      margin-bottom: 24px;
+    }
+
+    .card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 18px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .card-title {
+      font-size: 18px;
+      font-weight: 800;
+      color: var(--text-main);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    /* Member Role Cards */
+    .member-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+      gap: 20px;
+    }
+
+    .member-card {
+      border-radius: var(--radius);
+      padding: 22px;
+      border-width: 1px;
+      border-style: solid;
+      box-shadow: var(--shadow-sm);
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      position: relative;
+    }
+
+    .member-card.m1 { background: var(--color-m1-bg); border-color: var(--color-m1-border); }
+    .member-card.m2 { background: var(--color-m2-bg); border-color: var(--color-m2-border); }
+    .member-card.m3 { background: var(--color-m3-bg); border-color: var(--color-m3-border); }
+    .member-card.m4 { background: var(--color-m4-bg); border-color: var(--color-m4-border); }
+    .member-card.m5 { background: var(--color-m5-bg); border-color: var(--color-m5-border); }
+
+    .member-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+    }
+
+    .member-info h3 {
+      font-size: 17px;
+      font-weight: 800;
+      color: var(--text-main);
+    }
+
+    .member-role {
+      font-size: 12px;
+      font-weight: 700;
+      margin-top: 2px;
+    }
+
+    .member-card.m1 .member-role { color: var(--color-m1-text); }
+    .member-card.m2 .member-role { color: var(--color-m2-text); }
+    .member-card.m3 .member-role { color: var(--color-m3-text); }
+    .member-card.m4 .member-role { color: var(--color-m4-text); }
+    .member-card.m5 .member-role { color: var(--color-m5-text); }
+
+    .member-badge {
+      font-size: 11px;
+      font-weight: 800;
+      padding: 4px 10px;
+      border-radius: 9999px;
+      color: #fff;
+    }
+
+    .member-card.m1 .member-badge { background: var(--color-m1-badge); }
+    .member-card.m2 .member-badge { background: var(--color-m2-badge); }
+    .member-card.m3 .member-badge { background: var(--color-m3-badge); }
+    .member-card.m4 .member-badge { background: var(--color-m4-badge); }
+    .member-card.m5 .member-badge { background: var(--color-m5-badge); }
+
+    .section-box {
+      background: rgba(255, 255, 255, 0.7);
+      border-radius: 10px;
+      padding: 12px 14px;
+      font-size: 13px;
+    }
+
+    .section-box strong {
+      display: block;
+      margin-bottom: 6px;
+      font-size: 12px;
+      color: var(--text-main);
+    }
+
+    .tag-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 6px;
+    }
+
+    .tag {
+      background: #ffffff;
+      border: 1px solid rgba(0, 0, 0, 0.1);
+      padding: 2px 8px;
+      border-radius: 6px;
+      font-size: 11px;
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .verify-box {
+      border-right: 3px solid #10b981;
+      padding-right: 10px;
+    }
+
+    /* Timeline & Flow */
+    .timeline {
+      position: relative;
+      padding-right: 28px;
+    }
+
+    .timeline::before {
+      content: "";
+      position: absolute;
+      top: 10px;
+      bottom: 10px;
+      right: 10px;
+      width: 3px;
+      background: #cbd5e1;
+    }
+
+    .timeline-item {
+      position: relative;
+      margin-bottom: 24px;
+    }
+
+    .timeline-item::before {
+      content: "";
+      position: absolute;
+      right: -24px;
+      top: 6px;
+      width: 15px;
+      height: 15px;
+      border-radius: 50%;
+      background: #3b82f6;
+      border: 3px solid #ffffff;
+      box-shadow: 0 0 0 2px #3b82f6;
+    }
+
+    .timeline-item.active::before {
+      background: #10b981;
+      box-shadow: 0 0 0 2px #10b981;
+    }
+
+    .timeline-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 6px;
+    }
+
+    .timeline-time {
+      background: #e2e8f0;
+      color: #334155;
+      font-size: 12px;
+      font-weight: 700;
+      padding: 2px 10px;
+      border-radius: 6px;
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .timeline-title {
+      font-size: 15px;
+      font-weight: 800;
+      color: var(--text-main);
+    }
+
+    .timeline-body {
+      background: var(--bg-card-subtle);
+      border-radius: 10px;
+      padding: 12px 16px;
+      font-size: 13px;
+      color: #334155;
+    }
+
+    /* Matrix Table */
+    .table-container {
+      overflow-x: auto;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: right;
+      font-size: 13px;
+    }
+
+    th {
+      background: #f8fafc;
+      padding: 12px 16px;
+      font-weight: 800;
+      color: #1e293b;
+      border-bottom: 2px solid var(--border);
+      white-space: nowrap;
+    }
+
+    td {
+      padding: 12px 16px;
+      border-bottom: 1px solid var(--border);
+      vertical-align: top;
+      background: #ffffff;
+    }
+
+    tr:hover td {
+      background: #f8fafc;
+    }
+
+    .code-span {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      background: #f1f5f9;
+      padding: 2px 6px;
+      border-radius: 4px;
+      color: #0f172a;
+      direction: ltr;
+      display: inline-block;
+    }
+
+    /* Operations Console / Checklist */
+    .check-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 10px 14px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      margin-bottom: 10px;
+      background: #ffffff;
+      cursor: pointer;
+      transition: background 0.15s ease;
+    }
+
+    .check-item:hover {
+      background: #f8fafc;
+    }
+
+    .check-item input[type="checkbox"] {
+      margin-top: 4px;
+      accent-color: #10b981;
+      width: 18px;
+      height: 18px;
+      cursor: pointer;
+    }
+
+    .check-text {
+      flex: 1;
+    }
+
+    .check-title {
+      font-weight: 700;
+      font-size: 13px;
+      color: var(--text-main);
+    }
+
+    .check-desc {
+      font-size: 12px;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+
+    /* Callouts */
+    .callout {
+      border-right: 4px solid #3b82f6;
+      background: #eff6ff;
+      padding: 16px;
+      border-radius: 8px;
+      font-size: 13px;
+      color: #1e40af;
+      margin-bottom: 18px;
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+    }
+
+    .callout-success {
+      border-color: #10b981;
+      background: #ecfdf5;
+      color: #065f46;
+    }
+
+    .callout-warning {
+      border-color: #f59e0b;
+      background: #fffbeb;
+      color: #92400e;
+    }
+
+    .callout-danger {
+      border-color: #ef4444;
+      background: #fef2f2;
+      color: #991b1b;
+    }
+
+    /* Quick Links Button */
+    .btn-action {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: #0f172a;
+      color: #ffffff;
+      padding: 8px 16px;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 700;
+      text-decoration: none;
+      transition: all 0.2s;
+    }
+
+    .btn-action:hover {
+      background: #1e293b;
+      transform: translateY(-1px);
+    }
+
+    footer {
+      text-align: center;
+      padding: 24px;
+      color: var(--text-muted);
+      font-size: 13px;
+      border-top: 1px solid var(--border);
+      margin-top: 40px;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+
+  <!-- COMMAND CENTER HEADER -->
+  <header>
+    <div class="header-top">
+      <div class="title-group">
+        <h1>
+          <span>🛡️ غرفة عمليات القيادة والمتابعة اللحظية</span>
+          <span class="badge-lead"><span class="pulse-dot"></span> مباشر — IR Operations Center</span>
+        </h1>
+        <p>دليل القائد مصطفى لإدارة فريق الـ 5 مهندسين في مشروع استرجاع وتخزين المعلومات (6-Hour Sprint Execution System)</p>
+      </div>
+      <div>
+        <a href="https://trello.com/b/6b0233e1cccc215d1c4831a8" target="_blank" class="btn-action">
+          <span>📊 فتح لوحة Trello الرسمية</span> ↗
+        </a>
+      </div>
+    </div>
+
+    <!-- Live KPI Ribbon -->
+    <div class="kpi-row">
+      <div class="kpi-card">
+        <span class="kpi-label">زمن السبرنت الكامل</span>
+        <span class="kpi-value">6 ساعات</span>
+        <span class="kpi-desc">00:00 إلى 06:00 (تسليم نهائي)</span>
+      </div>
+      <div class="kpi-card">
+        <span class="kpi-label">عدد أعضاء الفريق</span>
+        <span class="kpi-value">5 مهندسين</span>
+        <span class="kpi-desc">تطوير متوازي بتكامل مركزي</span>
+      </div>
+      <div class="kpi-card">
+        <span class="kpi-label">قاعدة البيانات المعتمدة</span>
+        <span class="kpi-value">10 مستندات</span>
+        <span class="kpi-desc">Business Domain (d1 → d10)</span>
+      </div>
+      <div class="kpi-card">
+        <span class="kpi-label">حالة وثيقة العقود (Contracts)</span>
+        <span class="kpi-value" style="color: #10b981;">معتمدة ومقفلة ✅</span>
+        <span class="kpi-desc">contracts.py (Done on Trello)</span>
+      </div>
+      <div class="kpi-card">
+        <span class="kpi-label">ساعة الحسم والدمج</span>
+        <span class="kpi-value" style="color: #3b82f6;">الساعة الرابعة</span>
+        <span class="kpi-desc">Main Pipeline Integration</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- NAVIGATION TABS -->
+  <div class="tabs-nav">
+    <button class="tab-btn active" onclick="switchTab('cockpit')">🕹️ كبينة تحكم القائد (Radar)</button>
+    <button class="tab-btn" onclick="switchTab('members')">👥 مهام ومسؤوليات كل عضو (Matrix)</button>
+    <button class="tab-btn" onclick="switchTab('workflow')">⏱️ خريطة التدفق الزمني (Workflow)</button>
+    <button class="tab-btn" onclick="switchTab('dependencies')">🔗 شبكة التبعيات (من مستني مين؟)</button>
+    <button class="tab-btn" onclick="switchTab('integration')">🧩 بروتوكول الدمج الصحيح (Integration)</button>
+    <button class="tab-btn" onclick="switchTab('groundtruth')">🎯 الفاحص المرجعي (Ground Truth Tester)</button>
+  </div>
+
+  <!-- TAB 1: LEADER COCKPIT -->
+  <div id="cockpit" class="tab-content active">
+    <div class="grid-2">
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">📡 استراتيجية "غرفة العمليات": كيف تتابع بدون تشتيت الفريق؟</div>
+          <span class="tag">Rule of Command</span>
+        </div>
+        <p style="font-size: 14px; margin-bottom: 14px;">
+          كـ <strong>Team Leader & Senior Data Engineer</strong>، دورك ليس كتابة كل كود بنفسك، بل إدارة التوازن والتأكد أن القطع تتطابق بدقة ميليمترية. إليك الثلاثية الذهبية لإدارة السبرنت:
+        </p>
+
+        <div class="callout">
+          <div>💡</div>
+          <div>
+            <strong>1. نظام الإشارات الثلاثية (Traffic Light System):</strong><br>
+            • 🟢 <strong style="color: #065f46;">أخضر (Green):</strong> العضو شغال على الـ Mock Data المعتمدة، وملتزم بهيكل الدالة، ومفيش أي استفسار بلوكر.<br>
+            • 🟡 <strong style="color: #92400e;">أصفر (Yellow):</strong> تأخير أكثر من 15 دقيقة عن الجدول الزمني، أو اختلاف بسيط في مسمى مفتاح (Key Name). تدخّل فوراً واضبط المسمى.<br>
+            • 🔴 <strong style="color: #991b1b;">أحمر (Red):</strong> فشل في PySpark JVM، أو اختلاف في الترقيم الموقعي (0 vs 1)، أو تعارض Git Merge. أوقف ما في يدك وحل المشكلة بنفسك فوراً.
+          </div>
+        </div>
+
+        <div class="callout callout-success">
+          <div>🛡️</div>
+          <div>
+            <strong>2. مراقبة الـ Pull Requests وليس المحادثات الكلامية:</strong><br>
+            لا تسأل العضو "خلصت إيه؟"، بل افتح Trello والـ Git Branch الخاص به: إذا كان الـ Test الصغير شغال وملتزم بالـ Return Type للـ Contract، انقله لـ <code>In Review</code> ثم <code>Integration</code>.
+          </div>
+        </div>
+
+        <div class="callout callout-warning">
+          <div>⚖️</div>
+          <div>
+            <strong>3. مبدأ التطوير المتوازي (Parallel Execution Rule):</strong><br>
+            ممنوع منعاً باتاً أن يقف أي عضو منتظراً زميله! كل عضو معه في الـ Card الخاصة به <code>Mock Data</code> مطابقة للعقد. إبراهيم وروان وفيبرونيا يعملون من الدقيقة الأولى حتى لو كان منذر لا يزال يهيئ PySpark.
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">📋 قائمة الفحص اللحظي للقائد (Leader's Live Checkpoints)</div>
+          <span class="tag">Live Monitoring</span>
+        </div>
+
+        <div class="check-item">
+          <input type="checkbox" checked id="c1">
+          <label for="c1" class="check-text">
+            <div class="check-title">اعتماد وثيقة العقود الرسمية (contracts.py)</div>
+            <div class="check-desc">تم توثيقها، ونقل الكارت إلى Done / Accepted على Trello.</div>
+          </label>
+        </div>
+
+        <div class="check-item">
+          <input type="checkbox" id="c2">
+          <label for="c2" class="check-text">
+            <div class="check-title">التحقق من ترقيم منذر الموقعي (Positions 1-based)</div>
+            <div class="check-desc">افحص أول عنصر لـ "customer" في d1: يجب أن يكون [1] وليس [0].</div>
+          </label>
+        </div>
+
+        <div class="check-item">
+          <input type="checkbox" id="c3">
+          <label for="c3" class="check-text">
+            <div class="check-title">التحقق من إحصائيات إبراهيم (WTF Logarithm Base-10)</div>
+            <div class="check-desc">تأكد أنه استخدم math.log10 وليس math.log (الأساس الطبيعي e يدمر النتائج!).</div>
+          </label>
+        </div>
+
+        <div class="check-item">
+          <input type="checkbox" id="c4">
+          <label for="c4" class="check-text">
+            <div class="check-title">التحقق من متجهات روان (Unit Length Normalization)</div>
+            <div class="check-desc">تأكد أن جذر مجموع مربعات كل عمود في مصفوفة التطبيع = 1.0000 بالضبط.</div>
+          </label>
+        </div>
+
+        <div class="check-item">
+          <input type="checkbox" id="c5">
+          <label for="c5" class="check-text">
+            <div class="check-title">التحقق من منطق فيبرونيا (AND NOT First Phrase Vector)</div>
+            <div class="check-desc">في استعلام AND NOT: متجه الاستعلام يُبنى من كلمات العبارة الأولى فقط.</div>
+          </label>
+        </div>
+
+        <div class="check-item">
+          <input type="checkbox" id="c6">
+          <label for="c6" class="check-text">
+            <div class="check-title">الدمج النهائي وتشغيل أمر واحد (python src/main.py)</div>
+            <div class="check-desc">تدفق تسلسلي سلس يطبع كل الجداول ويحفظها في مجلد results/.</div>
+          </label>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TAB 2: MEMBER ROLES & DELIVERABLES MATRIX -->
+  <div id="members" class="tab-content">
+    <div class="member-grid">
+
+      <!-- M1: Mostafa -->
+      <div class="member-card m1">
+        <div class="member-header">
+          <div class="member-info">
+            <h3>مصطفى (Mostafa)</h3>
+            <div class="member-role">Team Leader & Integration Engineer</div>
+          </div>
+          <span class="member-badge">M1 - Leader</span>
+        </div>
+        <div class="section-box">
+          <strong>🎯 المطلوب منه (Responsibilities):</strong>
+          إدارة الـ Repository وعقود البيانات، بناء خط المعالجة المتكامل <code>src/main.py</code>، منسق المخرجات <code>display.py</code>، ومراجعة الـ PRs، والتحقق الشامل من الـ Ground Truth.
+        </div>
+        <div class="section-box verify-box">
+          <strong>🔍 كيف يتأكد أنه عمل صح؟ (Self-Verification):</strong>
+          أمر <code>python src/main.py</code> يشتغل من البداية للنهاية بدون أي كراش، ويُخرج ملفات نصية منسقة داخل <code>results/</code> مطابقة للمواصفات.
+        </div>
+        <div class="tag-list">
+          <span class="tag">main.py</span>
+          <span class="tag">contracts.py</span>
+          <span class="tag">display.py</span>
+          <span class="tag">Integration</span>
+        </div>
+      </div>
+
+      <!-- M2: Monzer -->
+      <div class="member-card m2">
+        <div class="member-header">
+          <div class="member-info">
+            <h3>منذر (Monzer)</h3>
+            <div class="member-role">Data Processing & Indexing Engineer</div>
+          </div>
+          <span class="member-badge">M2 - Processing</span>
+        </div>
+        <div class="section-box">
+          <strong>🎯 المطلوب منه (Responsibilities):</strong>
+          قراءة المستندات العشرة <code>load_documents("data")</code>، تقطيع الكلمات وحساب المواقع <code>tokenize_documents</code>، وبناء الفهرس الموقعي عبر PySpark <code>build_positional_index</code>.
+        </div>
+        <div class="section-box verify-box">
+          <strong>🔍 كيف تتأكد أنه عمل صح؟ (Leader Check):</strong>
+          1. <code>len(docs) == 10</code>.<br>
+          2. الترقيم يبدأ من <strong>1</strong> وليس 0.<br>
+          3. الـ Positional Index يحتوي على كل الكلمات، ومواقع كل كلمة مرتبة تصاعدياً.
+        </div>
+        <div class="tag-list">
+          <span class="tag">document_loader.py</span>
+          <span class="tag">tokenizer.py</span>
+          <span class="tag">positional_index.py (PySpark)</span>
+        </div>
+      </div>
+
+      <!-- M3: Ebrahim -->
+      <div class="member-card m3">
+        <div class="member-header">
+          <div class="member-info">
+            <h3>إبراهيم (Ebrahim)</h3>
+            <div class="member-role">Information Statistics Engineer</div>
+          </div>
+          <span class="member-badge">M3 - Statistics</span>
+        </div>
+        <div class="section-box">
+          <strong>🎯 المطلوب منه (Responsibilities):</strong>
+          حساب التردد الخام <code>calculate_raw_tf</code>، والتردد المعدل لوغاريتمياً <code>calculate_weighted_tf</code>، وتردد المستندات <code>calculate_df</code>، والوزن العكسي <code>calculate_idf</code>.
+        </div>
+        <div class="section-box verify-box">
+          <strong>🔍 كيف تتأكد أنه عمل صح؟ (Leader Check):</strong>
+          1. التأكد أن $WTF = 1 + \log_{10}(TF)$ عندما $TF > 0$ وإلا $0.0$.<br>
+          2. التأكد أن $IDF = \log_{10}(10 / DF)$.<br>
+          3. فحص قيمة "customer": إذا كان $DF=7$، فإن $IDF = \log_{10}(10/7) \approx 0.1549$.
+        </div>
+        <div class="tag-list">
+          <span class="tag">term_statistics.py</span>
+          <span class="tag">raw_tf</span>
+          <span class="tag">weighted_tf</span>
+          <span class="tag">df & idf</span>
+        </div>
+      </div>
+
+      <!-- M4: Rovan -->
+      <div class="member-card m4">
+        <div class="member-header">
+          <div class="member-info">
+            <h3>روان (Rovan)</h3>
+            <div class="member-role">Vectorization & Normalization Engineer</div>
+          </div>
+          <span class="member-badge">M4 - Vectorization</span>
+        </div>
+        <div class="section-box">
+          <strong>🎯 المطلوب منه (Responsibilities):</strong>
+          حساب مصفوفة <code>calculate_tfidf</code>، وحساب أطوال المستندات <code>calculate_document_lengths</code>، وتطبيع المتجهات <code>normalize_tfidf</code>، وتوليد متجه الاستعلام المعاير <code>vectorize_query</code>.
+        </div>
+        <div class="section-box verify-box">
+          <strong>🔍 كيف تتأكد أنه عمل صح؟ (Leader Check):</strong>
+          1. التأكد أن $TFIDF = WTF \times IDF$.<br>
+          2. فحص أن طول كل متجه مستند معيار يساوي بالضبط $1.0000$ (L2 Euclidean Norm = 1.0).<br>
+          3. التأكد من معالجة القسمة على صفر في حال كان طول المستند صفراً.
+        </div>
+        <div class="tag-list">
+          <span class="tag">tfidf.py</span>
+          <span class="tag">normalization.py</span>
+          <span class="tag">L2 Norm</span>
+          <span class="tag">vectorize_query</span>
+        </div>
+      </div>
+
+      <!-- M5: Febronia -->
+      <div class="member-card m5">
+        <div class="member-header">
+          <div class="member-info">
+            <h3>فيبرونيا (Febronia)</h3>
+            <div class="member-role">Retrieval & Ranking Engineer</div>
+          </div>
+          <span class="member-badge">M5 - Retrieval</span>
+        </div>
+        <div class="section-box">
+          <strong>🎯 المطلوب منه (Responsibilities):</strong>
+          محرك البحث اللفظي <code>search_phrase</code> بالتحقق من تتابع المواقع، محرك العمليات البوليانية <code>execute_boolean_query</code> (AND / AND NOT)، وحساب تشابه جيب التمام <code>calculate_similarity</code> وترتيب المستندات <code>rank_documents</code>.
+        </div>
+        <div class="section-box verify-box">
+          <strong>🔍 كيف تتأكد أنه عمل صح؟ (Leader Check):</strong>
+          1. <code>"customer service"</code> ترجع <code>['d1', 'd2', 'd5', 'd10']</code>.<br>
+          2. <code>"sales growth"</code> ترجع <code>['d3', 'd5', 'd7', 'd8']</code>.<br>
+          3. <code>AND</code> ترجع <code>['d5']</code> فقط، و <code>AND NOT</code> ترجع <code>['d1', 'd2', 'd10']</code>.<br>
+          4. درجات التشابه مرتبة تنازلياً بين 0.0 و 1.0.
+        </div>
+        <div class="tag-list">
+          <span class="tag">phrase_query.py</span>
+          <span class="tag">boolean_query.py</span>
+          <span class="tag">similarity.py</span>
+          <span class="tag">ranking.py</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- TAB 3: WORKFLOW & TIMELINE -->
+  <div id="workflow" class="tab-content">
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">⏳ خريطة التدفق الزمني للسبرنت (6-Hour Hourly Breakdown)</div>
+        <span class="tag">Execution Schedule</span>
+      </div>
+
+      <div class="timeline">
+        <div class="timeline-item active">
+          <div class="timeline-header">
+            <span class="timeline-time">00:00 - 01:00</span>
+            <span class="timeline-title">الساعة 1: الانطلاق، تجهيز الريبو، واعتماد عقود البيانات (Done ✅)</span>
+          </div>
+          <div class="timeline-body">
+            • شرح خطة السبرنت لكل الفريق وتوزيع المهام.<br>
+            • اعتماد وثيقة <code>contracts.py</code> وتثبيت أسماء ومفاتيح الـ Dictionaries.<br>
+            • إنشاء فروع Git لكل عضو: <code>feature/monzer-preprocessing</code>, <code>feature/ebrahim-stats</code>, <code>feature/rovan-vectorization</code>, <code>feature/febronia-retrieval</code>.
+          </div>
+        </div>
+
+        <div class="timeline-item">
+          <div class="timeline-header">
+            <span class="timeline-time">01:00 - 02:00</span>
+            <span class="timeline-title">الساعة 2: البرمجة المتوازية للوحدات الأساسية (Core Implementation)</span>
+          </div>
+          <div class="timeline-body">
+            • <strong>مصطفى:</strong> هيكل <code>main.py</code> ومنسق الطباعة <code>display.py</code> ببيانات تجريبية.<br>
+            • <strong>منذر:</strong> Loader و Tokenizer و PySpark Inverted Index.<br>
+            • <strong>إبراهيم:</strong> حسابات TF, WTF, DF, IDF بالـ Mock Data.<br>
+            • <strong>روان:</strong> مصفوفة TF-IDF وأطوال المستندات وتطبيع L2.<br>
+            • <strong>فيبرونيا:</strong> خوارزمية البحث اللفظي Proximity/Positional match وعمليات AND/AND NOT.
+          </div>
+        </div>
+
+        <div class="timeline-item">
+          <div class="timeline-header">
+            <span class="timeline-time">02:00 - 03:00</span>
+            <span class="timeline-title">الساعة 3: استكمال الوحدات والمراجعة الأحادية (Unit Testing & PRs)</span>
+          </div>
+          <div class="timeline-body">
+            • كل عضو ينهي الكود الخاص به ويشغّل Unit Test محلي صغير.<br>
+            • التأكد من توافق المخرجات 100% مع دوال التحقق في <code>contracts.py</code>.<br>
+            • رفع Pull Requests إلى فرع <code>develop</code> ونقل كروت Trello إلى <code>In Review</code>.
+          </div>
+        </div>
+
+        <div class="timeline-item">
+          <div class="timeline-header">
+            <span class="timeline-time">03:00 - 04:00</span>
+            <span class="timeline-title">الساعة 4: ساعة الدمج الكبرى (Main Pipeline Integration) 🚨</span>
+          </div>
+          <div class="timeline-body">
+            • مصطفى يقود الدمج المتسلسل: دمج كود منذر، ثم استدعاء كود إبراهيم، ثم روان، ثم فيبرونيا.<br>
+            • ربط خط المعالجة في <code>src/main.py</code> وتشغيله بأمر واحد موحد.<br>
+            • نقل كروت Trello إلى <code>Integration & Testing</code>.
+          </div>
+        </div>
+
+        <div class="timeline-item">
+          <div class="timeline-header">
+            <span class="timeline-time">04:00 - 05:00</span>
+            <span class="timeline-title">الساعة 5: اختبارات المطابقة الشاملة (Ground Truth Validation)</span>
+          </div>
+          <div class="timeline-body">
+            • تشغيل <code>pytest tests/test_ground_truth.py</code>.<br>
+            • التأكد من دقة نتائج استعلامات Business Dataset (4 استعلامات مرجعية).<br>
+            • مطابقة تطبيع L2 Norm = 1.0000 وترتيب درجات التشابه التنازلي.
+          </div>
+        </div>
+
+        <div class="timeline-item">
+          <div class="timeline-header">
+            <span class="timeline-time">05:00 - 06:00</span>
+            <span class="timeline-title">الساعة 6: التوثيق الشامل، الإجابات المفاهيمية، والتسليم (Final Delivery)</span>
+          </div>
+          <div class="timeline-body">
+            • كتابة إجابات الأسئلة المفاهيمية الستة (Part C Conceptual Explanations).<br>
+            • تصدير كافة الجداول والمصفوفات داخل <code>results/part_a_tables.txt</code> و <code>results/part_b_results.txt</code>.<br>
+            • التقاط لقطات الشاشة لشاشات التشغيل وتجهيز أرشيف التسليم النهائي النظيف.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TAB 4: DEPENDENCIES & DATA FLOW -->
+  <div id="dependencies" class="tab-content">
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">🔗 شبكة التبعيات: من ينتظر ماذا، ومن من، ومتى؟</div>
+        <span class="tag">Input / Output Protocol</span>
+      </div>
+
+      <div class="table-container">
+        <table>
+          <thead>
+            <tr>
+              <th>العضو المستهلك (Consumer)</th>
+              <th>ماذا يحتاج؟ (Required Input)</th>
+              <th>من ينتجها؟ (Producer)</th>
+              <th>الموعد الحقيقي</th>
+              <th>كيف يعمل بالتوازي دون انتظار؟ (Mock Bridge)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>إبراهيم (M3 - Stats)</strong></td>
+              <td><code>positional_index</code></td>
+              <td>منذر (M2)</td>
+              <td>نهاية الساعة 2</td>
+              <td>يستخدم <code>SAMPLE_CONTRACT_PAYLOAD["positional_index"]</code> من ملف <code>contracts.py</code> ويبدأ فوراً.</td>
+            </tr>
+            <tr>
+              <td><strong>فيبرونيا (M5 - Retrieval)</strong></td>
+              <td><code>positional_index</code></td>
+              <td>منذر (M2)</td>
+              <td>نهاية الساعة 2</td>
+              <td>تستخدم نفس الـ Mock Index لاختبار لوجيك الـ Phrase والـ Boolean في الساعة 2.</td>
+            </tr>
+            <tr>
+              <td><strong>روان (M4 - Vectorization)</strong></td>
+              <td><code>weighted_tf</code> و <code>idf</code></td>
+              <td>إبراهيم (M3)</td>
+              <td>نصف الساعة 3</td>
+              <td>تستخدم مصفوفة أوزان مصغرة محسوبة يدوياً (d1, d2) وتبرمج دوال الـ TF-IDF والـ Normalization فوراً.</td>
+            </tr>
+            <tr>
+              <td><strong>فيبرونيا (M5 - Ranking)</strong></td>
+              <td><code>norm_tfidf</code> و <code>query_vector</code></td>
+              <td>روان (M4)</td>
+              <td>نهاية الساعة 3</td>
+              <td>تجهز دالة الـ Cosine Similarity (Dot Product) بمتجهات تجريبية بطول 1.0.</td>
+            </tr>
+            <tr>
+              <td><strong>مصطفى (M1 - Integration)</strong></td>
+              <td>جميع وحدات الفريق الأربعة</td>
+              <td>الجميع (M2, M3, M4, M5)</td>
+              <td>الساعة 4</td>
+              <td>يبني الـ Orchestrator في <code>main.py</code> بهيكل الاستدعاءات الكامل، ثم يستبدل الـ Stubs بالكود الفعلي عند الدمج.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- TAB 5: INTEGRATION MASTER PROTOCOL -->
+  <div id="integration" class="tab-content">
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">🧩 بروتوكول الدمج الاحترافي (Integration Master Guide)</div>
+        <span class="tag">Zero Conflict Strategy</span>
+      </div>
+
+      <p style="font-size: 14px; margin-bottom: 16px;">
+        الدمج العشوائي هو أكبر سبب لفشل المشاريع البرمجية. كـ Senior Data Engineer، هذا هو الترتيب التسلسلي الصارم الذي يجب أن تتبعه في الساعة الرابعة لضمان دمج بنسبة نجاح 100%:
+      </p>
+
+      <div class="timeline">
+        <div class="timeline-item active">
+          <div class="timeline-header">
+            <span class="timeline-time">الخطوة 1</span>
+            <span class="timeline-title">دمج الطبقة التأسيسية: كود منذر (Data Ingestion & Indexing)</span>
+          </div>
+          <div class="timeline-body">
+            • اسحب branch منذر إلى <code>develop</code>.<br>
+            • نفذ: <code>docs = load_documents("data")</code> ثم <code>tokens = tokenize_documents(docs)</code> ثم <code>pos_index = build_positional_index(tokens)</code>.<br>
+            • <strong>فحص الجودة:</strong> استدعاء <code>validate_positional_index(pos_index)</code> من <code>contracts.py</code>. إذا اجتاز الفحص، الطبقة الأولى سليمة!
+          </div>
+        </div>
+
+        <div class="timeline-item active">
+          <div class="timeline-header">
+            <span class="timeline-time">الخطوة 2</span>
+            <span class="timeline-title">دمج الطبقة الإحصائية: كود إبراهيم (Term Statistics)</span>
+          </div>
+          <div class="timeline-body">
+            • مرر <code>pos_index</code> الحقيقي الناتج من الخطوة 1 إلى دوال إبراهيم:<br>
+            <code>raw_tf = calculate_raw_tf(pos_index)</code><br>
+            <code>weighted_tf = calculate_weighted_tf(raw_tf)</code><br>
+            <code>df = calculate_df(pos_index)</code><br>
+            <code>idf = calculate_idf(df, total_documents=10)</code><br>
+            • <strong>فحص الجودة:</strong> استدعاء <code>validate_df_idf(df, idf)</code> و <code>validate_weighted_tf(weighted_tf, raw_tf)</code>.
+          </div>
+        </div>
+
+        <div class="timeline-item active">
+          <div class="timeline-header">
+            <span class="timeline-time">الخطوة 3</span>
+            <span class="timeline-title">دمج طبقة المتجهات والتطبيع: كود روان (Vector Space Model)</span>
+          </div>
+          <div class="timeline-body">
+            • مرر <code>weighted_tf</code> و <code>idf</code> إلى دوال روان:<br>
+            <code>tfidf = calculate_tfidf(weighted_tf, idf)</code><br>
+            <code>lengths = calculate_document_lengths(tfidf, list(docs.keys()))</code><br>
+            <code>norm_tfidf = normalize_tfidf(tfidf, lengths)</code><br>
+            • <strong>فحص الجودة:</strong> استدعاء <code>validate_tfidf_and_norms(tfidf, lengths, norm_tfidf)</code> للتأكد من أن جميع الأطوال أصبحت 1.0000.
+          </div>
+        </div>
+
+        <div class="timeline-item active">
+          <div class="timeline-header">
+            <span class="timeline-time">الخطوة 4</span>
+            <span class="timeline-title">دمج طبقة الاسترجاع والترتيب: كود فيبرونيا (Retrieval & Ranking)</span>
+          </div>
+          <div class="timeline-body">
+            • استدعاء البحث اللفظي والبولياني: <code>search_phrase</code> و <code>execute_boolean_query</code>.<br>
+            • بناء متجهات الاستعلام وتطبيق دالة التشابه: <code>calculate_similarity</code> ثم <code>rank_documents</code>.<br>
+            • <strong>فحص الجودة:</strong> مطابقة النتائج مع جدول الـ Ground Truth.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TAB 6: GROUND TRUTH TESTER -->
+  <div id="groundtruth" class="tab-content">
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">🎯 الفاحص المرجعي اللحظي (Interactive Ground Truth Benchmark)</div>
+        <span class="tag">Auto-Validator</span>
+      </div>
+
+      <p style="font-size: 14px; margin-bottom: 20px;">
+        الجدول المرجعي النهائي المعتمد لمطابقة مخرجات النظام (Part A & Part B) على مجموعة نصوص الأعمال (Business Dataset):
+      </p>
+
+      <div class="table-container" style="margin-bottom: 24px;">
+        <table>
+          <thead>
+            <tr>
+              <th>الاستعلام (Query)</th>
+              <th>النوع (Query Type)</th>
+              <th>المستندات المتطابقة الصارمة (Ground Truth Docs)</th>
+              <th>المستند المتصدر في الترتيب (Top Ranked Doc)</th>
+              <th>ملاحظات قيادية للتحقق</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>"customer service"</code></td>
+              <td>Phrase Query (عبارة دقيقة)</td>
+              <td><span class="code-span">['d1', 'd2', 'd5', 'd10']</span></td>
+              <td><strong>d1</strong> (أعلى تشابه)</td>
+              <td>تأكد أن المواقع متتالية بالضبط بفارق +1 في الفهرس.</td>
+            </tr>
+            <tr>
+              <td><code>"sales growth"</code></td>
+              <td>Phrase Query (عبارة دقيقة)</td>
+              <td><span class="code-span">['d3', 'd5', 'd7', 'd8']</span></td>
+              <td><strong>d5 / d8</strong></td>
+              <td>تكررت العبارة بمواقع متتالية في 4 مستندات مختلفة.</td>
+            </tr>
+            <tr>
+              <td><code>"customer service" AND "sales growth"</code></td>
+              <td>Boolean AND (تقاطع)</td>
+              <td><span class="code-span">['d5']</span></td>
+              <td><strong>d5</strong></td>
+              <td>المستند الوحيد المشترك الذي يحتوي على العبارتين معاً.</td>
+            </tr>
+            <tr>
+              <td><code>"customer service" AND NOT "sales growth"</code></td>
+              <td>Boolean AND NOT (استبعاد)</td>
+              <td><span class="code-span">['d1', 'd2', 'd10']</span></td>
+              <td><strong>d1</strong></td>
+              <td>تم استبعاد d5 لأنها تحتوي على العبارة الثانية. تذكر: متجه الاستعلام يُبنى من كلمات العبارة الأولى فقط!</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="callout callout-success">
+        <div>🎉</div>
+        <div>
+          <strong>ضمان الجودة الأكاديمية والمهنية:</strong><br>
+          إذا طابقت نتائج الـ Pipeline الأربعة هذه مع الأرقام أعلاه، فإن المشروع مكتمل بنسبة 100% رياضياً وبرمجياً وجاهز للتوثيق النهائي والتسليم بالعلامة الكاملة بإذن الله!
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <p>تم إعداد وتطوير لوحة العمليات بواسطة <strong>Senior Data Engineer & Team Leader (Mostafa)</strong> | مشروع استرجاع وتخزين المعلومات 2026</p>
+  </footer>
+
+</div>
+
+<script>
+  function switchTab(tabId) {
+    document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+    document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+
+    event.currentTarget.classList.add('active');
+    const target = document.getElementById(tabId);
+    if (target) {
+      target.classList.add('active');
+    }
+  }
+</script>
+
+</body>
+</html>

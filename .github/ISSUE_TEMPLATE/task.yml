@@ -1,0 +1,30 @@
+name: 📋 مهمة سبرنت (Sprint Task)
+description: فتح Issue رسمي لتاسك من كروت Trello لربطه بالـ Pull Request
+labels: ["task"]
+body:
+  - type: input
+    id: task-title
+    attributes:
+      label: عنوان التاسك
+      placeholder: "[Hour 1-2] IR-04: PySpark Positional Index"
+    validations:
+      required: true
+  - type: dropdown
+    id: member
+    attributes:
+      label: العضو المسؤول (Assigned Member)
+      options:
+        - "مصطفى (Mostafa - Team Leader)"
+        - "منذر (Monzer - Data Processing)"
+        - "إبراهيم (Ebrahim - Statistics)"
+        - "روان (Rovan - Vectorization)"
+        - "فيبرونيا (Febronia - Retrieval)"
+    validations:
+      required: true
+  - type: textarea
+    id: deliverables
+    attributes:
+      label: المخرجات المتوقعة والـ Acceptance Criteria
+      placeholder: قائمة بالملفات والدوال المطلوبة من كارت Trello.
+    validations:
+      required: true

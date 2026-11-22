@@ -1,0 +1,32 @@
+name: 🐛 تقرير خطأ برمجي (Bug Report)
+description: الإبلاغ عن مشكلة غير متوقعة أو خطأ في الحسابات الرياضية
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        يرجى ملء النموذج بدقة لمساعدة الفريق وقائد المشروع في إعادة إنتاج الخطأ وحله بسرعة.
+  - type: input
+    id: trello-task
+    attributes:
+      label: كارت Trello ذو الصلة
+      placeholder: "[Hour 2-3] IR-06: DF & IDF Calculator"
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: وصف المشكلة
+      placeholder: ما الذي حدث بالضبط وما هو السلوك الخاطئ؟
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: السلوك المتوقع (Expected Behavior)
+      placeholder: ما القيمة التي كان يجب أن تظهر وفقاً لـ src/contracts.py؟
+    validations:
+      required: true
+  - type: textarea
+    id: logs
+    attributes:
+      label: رسالة الخطأ أو الـ Traceback
+      render: shell

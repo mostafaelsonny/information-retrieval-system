@@ -1,0 +1,20 @@
+# ==============================================================================
+# CODEOWNERS — Information Storage & Retrieval (IR) System
+# ==============================================================================
+# All files require Mostafa's explicit review and approval before merging.
+# Only Mostafa (@mostafaelsonny) is authorized to approve and merge PRs.
+# ==============================================================================
+
+*                               @mostafaelsonny
+/src/preprocessing/             @mostafaelsonny
+/src/indexing/                  @mostafaelsonny
+/src/statistics/                @mostafaelsonny
+/src/vectorization/             @mostafaelsonny
+/src/retrieval/                 @mostafaelsonny
+/src/ranking/                   @mostafaelsonny
+/src/output/                    @mostafaelsonny
+/src/main.py                    @mostafaelsonny
+/src/contracts.py               @mostafaelsonny
+/tests/                         @mostafaelsonny
+/docs/                          @mostafaelsonny
+/.github/                       @mostafaelsonny
