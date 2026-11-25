@@ -32,12 +32,31 @@ def test_customer_positions(python_index):
         "d10": [1, 4],
     }
 
+
 def test_service_positions(python_index):
     assert python_index["service"] == {
         "d1": [2],
         "d2": [2],
         "d5": [2, 7],
         "d10": [2],
+    }
+
+
+def test_sales_positions(python_index):
+    assert python_index["sales"] == {
+        "d3": [1],
+        "d5": [4, 9],
+        "d7": [4],
+        "d8": [1, 3],
+    }
+
+
+def test_growth_positions(python_index):
+    assert python_index["growth"] == {
+        "d3": [2],
+        "d5": [5],
+        "d7": [5],
+        "d8": [2],
     }
 
 
