@@ -1,12 +1,14 @@
-"""
-Member 3 (Ebrahim): Information Statistics
-Calculates Raw TF, Weighted TF, Document Frequency (DF), and Inverse Document Frequency (IDF).
-Rules: Base-10 logarithm, WTF = 1 + log10(TF) when TF > 0 else 0.0, IDF = log10(N / DF).
-"""
+
+
 import math
 from typing import Dict
-from src.contracts import PositionalIndexContract, RawTFContract, WeightedTFContract, DFContract, IDFContract
-
+from src.contracts import (
+    PositionalIndexContract,
+    RawTFContract,
+    WeightedTFContract,
+    DFContract,
+    IDFContract,
+)
 
 def calculate_raw_tf(pos_index: PositionalIndexContract) -> RawTFContract:
     """Calculates term frequency as the count of occurrences (positions) in each document."""
@@ -17,10 +19,8 @@ def calculate_raw_tf(pos_index: PositionalIndexContract) -> RawTFContract:
             raw_tf[term][doc_id] = len(positions)
     return raw_tf
 
-
 def calculate_weighted_tf(raw_tf: RawTFContract) -> WeightedTFContract:
-    """
-    Calculates weighted term frequency:
+    """Calculates weighted term frequency:
     WTF = 1 + log10(TF) if TF > 0 else 0.0
     """
     weighted_tf: WeightedTFContract = {}
@@ -30,7 +30,6 @@ def calculate_weighted_tf(raw_tf: RawTFContract) -> WeightedTFContract:
             weighted_tf[term][doc_id] = (1.0 + math.log10(count)) if count > 0 else 0.0
     return weighted_tf
 
-
 def calculate_df(pos_index: PositionalIndexContract) -> DFContract:
     """Calculates document frequency: count of documents containing the term."""
     df: DFContract = {}
@@ -38,10 +37,8 @@ def calculate_df(pos_index: PositionalIndexContract) -> DFContract:
         df[term] = len(postings.keys())
     return df
 
-
 def calculate_idf(df: DFContract, total_documents: int = 10) -> IDFContract:
-    """
-    Calculates inverse document frequency:
+    """Calculates inverse document frequency:
     IDF = log10(total_documents / DF)
     """
     idf: IDFContract = {}
