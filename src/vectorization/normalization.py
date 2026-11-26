@@ -1,41 +1,64 @@
 """
-Member 4 (Rovan): Vector Normalization & Query Vectorizer
+Member 4 (Rovan): Vector Normalization & Query Vectorizer (IR-08 & IR-09)
 Calculates Euclidean (L2) document lengths, normalizes document vectors to unit length (1.0),
 and normalizes query vectors.
 """
 import math
-from typing import Dict, List
 from collections import Counter
-from src.contracts import TFIDFMatrixContract, DocumentLengthsContract, NormalizedTFIDFContract, QueryVectorContract, IDFContract
+from typing import Dict, List
+
+from src.contracts import (
+    DocumentLengthsContract,
+    IDFContract,
+    NormalizedTFIDFContract,
+    QueryVectorContract,
+    TFIDFMatrixContract,
+)
 
 
-def calculate_document_lengths(tfidf_matrix: TFIDFMatrixContract, doc_ids: List[str]) -> DocumentLengthsContract:
+def calculate_document_lengths(
+    tfidf_matrix: TFIDFMatrixContract,
+    doc_ids: List[str],
+) -> DocumentLengthsContract:
     """
-    Calculates L2 length for each document:
-    Length(d) = sqrt( sum( TF-IDF(t, d)^2 for all terms t ) )
+    Calculates L2 Euclidean length for each document:
+        |D| = sqrt( sum( TF-IDF(t, D)^2 for all terms t ) )
+
+    Preserves full 64-bit floating-point precision with no intermediate rounding.
     """
     lengths: DocumentLengthsContract = {doc_id: 0.0 for doc_id in doc_ids}
-    for term, doc_scores in tfidf_matrix.items():
-        for doc_id, score in doc_scores.items():
-            if doc_id in lengths:
-                lengths[doc_id] += score ** 2
+    for doc_scores in tfidf_matrix.values():
+        for doc_id in lengths:
+            weight = float(doc_scores.get(doc_id, 0.0))
+            lengths[doc_id] += weight ** 2
 
     for doc_id in lengths:
         lengths[doc_id] = math.sqrt(lengths[doc_id])
     return lengths
 
 
-def normalize_tfidf(tfidf_matrix: TFIDFMatrixContract, document_lengths: DocumentLengthsContract) -> NormalizedTFIDFContract:
+def normalize_tfidf(
+    tfidf_matrix: TFIDFMatrixContract,
+    document_lengths: DocumentLengthsContract,
+) -> NormalizedTFIDFContract:
     """
-    Normalizes TF-IDF weights by dividing by document Euclidean length.
-    Safe division: if length == 0.0, normalized weight is 0.0.
+    Applies L2 normalization to the TF-IDF matrix by dividing each weight
+    by its document Euclidean length:
+        Normalized(t, D) = TF-IDF(t, D) / |D|
+
+    Returns a complete matrix covering all documents in `document_lengths`.
+    Safe division: if |D| <= 0.0, normalized weight is set to 0.0.
     """
     norm_matrix: NormalizedTFIDFContract = {}
     for term, doc_scores in tfidf_matrix.items():
+        all_doc_ids = list(
+            dict.fromkeys(list(document_lengths.keys()) + list(doc_scores.keys()))
+        )
         norm_matrix[term] = {}
-        for doc_id, score in doc_scores.items():
-            length = document_lengths.get(doc_id, 0.0)
-            norm_matrix[term][doc_id] = (score / length) if length > 0.0 else 0.0
+        for doc_id in all_doc_ids:
+            weight = float(doc_scores.get(doc_id, 0.0))
+            length = float(document_lengths.get(doc_id, 0.0))
+            norm_matrix[term][doc_id] = (weight / length) if length > 0.0 else 0.0
     return norm_matrix
 
 
