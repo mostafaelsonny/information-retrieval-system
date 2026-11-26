@@ -41,23 +41,33 @@ def normalize_tfidf(tfidf_matrix: TFIDFMatrixContract, document_lengths: Documen
 
 def vectorize_query(query_terms: List[str], idf: IDFContract) -> QueryVectorContract:
     """
-    Constructs a normalized query vector:
-    1. Raw TF = count of each term in query
-    2. WTF = 1 + log10(TF)
-    3. Weight = WTF * IDF
-    4. Normalize by query vector Euclidean length
+    Converts query terms into an L2-normalized TF-IDF vector using collection IDF:
+        1. Normalize tokens (lowercase, strip whitespace, skip empty) and compute Raw TF.
+        2. Apply logarithmic TF weighting: WTF = 1.0 + log10(TF).
+        3. Multiply by collection IDF (never recompute IDF from the query).
+        4. Compute Euclidean (L2) query vector length: |Q| = sqrt(sum(weight^2)).
+        5. Return normalized query vector Q_norm (0.0 safely when |Q| == 0.0).
     """
-    term_counts = Counter(query_terms)
-    unnormalized_weights: Dict[str, float] = {}
+    raw_tf: Dict[str, int] = {}
+    for token in query_terms:
+        clean_token = token.lower().strip()
+        if not clean_token:
+            continue
+        raw_tf[clean_token] = raw_tf.get(clean_token, 0) + 1
 
-    for term, count in term_counts.items():
-        term_idf = idf.get(term, 0.0)
-        wtf = 1.0 + math.log10(count) if count > 0 else 0.0
-        unnormalized_weights[term] = wtf * term_idf
+    query_tfidf: Dict[str, float] = {}
+    sum_sq = 0.0
+    for token, tf in raw_tf.items():
+        wtf = 1.0 + math.log10(tf)
+        token_idf = float(idf.get(token, 0.0))
+        weight = wtf * token_idf
+        query_tfidf[token] = weight
+        sum_sq += weight ** 2
 
-    q_length = math.sqrt(sum(w ** 2 for w in unnormalized_weights.values()))
+    q_length = math.sqrt(sum_sq)
 
     normalized_query: QueryVectorContract = {}
-    for term, weight in unnormalized_weights.items():
-        normalized_query[term] = (weight / q_length) if q_length > 0.0 else 0.0
+    for token, weight in query_tfidf.items():
+        normalized_query[token] = (weight / q_length) if q_length > 0.0 else 0.0
     return normalized_query
+
