@@ -1,47 +1,77 @@
 """
-Member 5 (Febronia): Phrase Query Engine
-Searches for exact consecutive word sequences using the positional index.
+Member 5 (Febronia): Positional Phrase Query Engine (IR-10)
+Searches for exact consecutive word sequences using the positional inverted index.
 """
 from typing import Dict, List
-from src.contracts import PositionalIndexContract, PhraseResultsContract
+
+from src.contracts import PositionalIndexContract
 
 
-def search_phrase(phrase: str, pos_index: PositionalIndexContract) -> Dict[str, List[int]]:
+def search_phrase(
+    phrase: str,
+    positional_index: PositionalIndexContract,
+) -> Dict[str, List[int]]:
     """
-    Finds documents containing the exact phrase, where word positions are strictly consecutive (pos2 = pos1 + 1).
-    Returns mapping: {doc_id -> [match_starting_positions]}
+    Search for an exact phrase of one or more terms in the positional index.
+
+    For multi-word phrases, verifies strictly consecutive 1-based positions
+    such that Position(word_{i+1}) == Position(word_i) + 1.
+
+    Args:
+        phrase: Search query string.
+        positional_index: Mapping of term -> {doc_id -> sorted list of 1-based positions}.
+
+    Returns:
+        Dictionary mapping each matching doc_id (naturally sorted) to its list
+        of matching starting positions.
     """
-    terms = phrase.strip().lower().split()
-    if not terms:
+    words = phrase.lower().strip().split()
+    if not words:
         return {}
 
-    # Single term query
-    if len(terms) == 1:
-        term = terms[0]
-        return {doc_id: list(positions) for doc_id, positions in pos_index.get(term, {}).items()}
+    if len(words) == 1:
+        term = words[0]
+        postings = positional_index.get(term, {})
+        return {
+            doc_id: list(postings[doc_id])
+            for doc_id in sorted(
+                postings.keys(),
+                key=lambda x: (0, int(x[1:])) if x.startswith("d") and x[1:].isdigit() else (1, x),
+            )
+        }
 
-    # Multi-term phrase query
-    first_term = terms[0]
-    if first_term not in pos_index:
+    first_term = words[0]
+    first_postings = positional_index.get(first_term, {})
+    if not first_postings:
         return {}
 
-    matching_docs: Dict[str, List[int]] = {}
+    candidate_docs = set(first_postings.keys())
+    for word in words[1:]:
+        candidate_docs.intersection_update(positional_index.get(word, {}).keys())
 
-    for doc_id, start_positions in pos_index[first_term].items():
-        valid_start_positions: List[int] = []
+    if not candidate_docs:
+        return {}
 
-        for start_pos in start_positions:
-            is_match = True
-            for offset, next_term in enumerate(terms[1:], start=1):
-                expected_pos = start_pos + offset
-                doc_positions = pos_index.get(next_term, {}).get(doc_id, [])
-                if expected_pos not in doc_positions:
-                    is_match = False
-                    break
-            if is_match:
-                valid_start_positions.append(start_pos)
+    results: Dict[str, List[int]] = {}
+    for doc_id in sorted(
+        candidate_docs,
+        key=lambda x: (0, int(x[1:])) if x.startswith("d") and x[1:].isdigit() else (1, x),
+    ):
+        first_positions = first_postings[doc_id]
+        next_position_sets = [
+            set(positional_index.get(next_word, {}).get(doc_id, []))
+            for next_word in words[1:]
+        ]
+        matching_starts: List[int] = []
 
-        if valid_start_positions:
-            matching_docs[doc_id] = valid_start_positions
+        for start_pos in first_positions:
+            if all(
+                (start_pos + offset) in pos_set
+                for offset, pos_set in enumerate(next_position_sets, start=1)
+            ):
+                matching_starts.append(start_pos)
 
-    return matching_docs
+        if matching_starts:
+            results[doc_id] = matching_starts
+
+    return results
