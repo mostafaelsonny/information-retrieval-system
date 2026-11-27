@@ -1,21 +1,31 @@
 """
-Member 5 (Febronia): Cosine Similarity Calculator
-Computes cosine similarity between normalized query vector and normalized document vectors.
-Since vectors are L2-normalized, Cosine Similarity is simply the Dot Product!
+Member 5 (Febronia): Cosine Similarity Calculator (IR-12)
+Computes cosine similarity between the L2-normalized query vector and
+L2-normalized document vectors for retrieved matching documents only.
 """
 from typing import Dict, List
-from src.contracts import QueryVectorContract, NormalizedTFIDFContract
+
+from src.contracts import NormalizedTFIDFContract, QueryVectorContract
 
 
 def calculate_similarity(
     query_vector: QueryVectorContract,
     normalized_tfidf: NormalizedTFIDFContract,
-    target_docs: List[str]
+    target_docs: List[str],
 ) -> Dict[str, float]:
     """
-    Calculates cosine similarity for target documents:
-    Sim(Q, D) = sum( q_weight * doc_weight for all terms in Q )
-    Returns mapping: {doc_id -> similarity_score}
+    Calculate Cosine Similarity via Dot Product between an L2-normalized query
+    vector and each L2-normalized document vector in target_docs.
+
+    Sim(Q, D) = sum(q_weight * doc_weight for term, q_weight in query_vector.items())
+
+    Args:
+        query_vector: L2-normalized query vector mapping term -> weight.
+        normalized_tfidf: Normalized TF-IDF matrix mapping term -> {doc_id -> weight}.
+        target_docs: List of retrieved matching document IDs to score.
+
+    Returns:
+        Dictionary mapping each target doc_id to its cosine similarity score.
     """
     scores: Dict[str, float] = {}
     for doc_id in target_docs:
